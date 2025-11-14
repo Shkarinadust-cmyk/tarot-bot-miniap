@@ -33,7 +33,7 @@ function loadUserBalance() {
         
         if (user && user.id) {
             const storedBalance = localStorage.getItem(`tarot_balance_${user.id}`);
-            userBalance = storedBalance ? parseInt(storedBalance) : 3; // 3 бесплатных вопроса
+            userBalance = storedBalance ? parseInt(storedBalance) : 10; // 10 бесплатных вопроса
             updateBalanceDisplay();
         }
     }
