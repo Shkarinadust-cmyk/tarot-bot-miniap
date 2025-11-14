@@ -3,44 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Таро Бот</title>
+    <title>Таро Бот - Управление вопросами</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
 </head>
 <body>
     <div class="container">
-        <!-- БЛОК БАЛАНСА -->
+        <!-- ШАПКА С БАЛАНСОМ -->
         <div class="balance-block">
             <h2>Баланс вопросов</h2>
             <div id="balance" class="balance-amount">0</div>
-            <button class="btn-primary" onclick="openPaymentPage()">Купить вопросы</button>
+            <button class="btn-primary" onclick="openPaymentPage()">💳 Купить вопросы</button>
+            
+            <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
+            <div class="quick-actions">
+                <button class="btn-bot" onclick="sendBalanceToBot()">
+                    🔄 Обновить в боте
+                </button>
+                <button class="btn-bot secondary" onclick="addQuestions(10)">
+                    🎁 Тест: +10 вопросов
+                </button>
+            </div>
         </div>
 
-        <!-- БЛОК "СОВЕТ ДРУЗЬЯМ" -->
+        <!-- ОСНОВНЫЕ ФУНКЦИИ -->
         <div class="block" onclick="openReferralPage()">
-            <h3>👥 Совет друзьям</h3>
-            <p>Посоветуй другу и получите по 10 вопросов!</p>
+            <h3>👥 Пригласить друзей</h3>
+            <p>Дарите друзьям +10 вопросов каждому!</p>
         </div>
 
-        <!-- БЛОК "КАРТА ДНЯ" -->
         <div class="block" onclick="toggleDailyCard()">
             <h3>🔮 Карта дня</h3>
             <p id="dailyCardStatus">Выкл</p>
         </div>
 
-        <!-- БЛОК "ОТЗЫВЫ" -->
         <div class="block" onclick="window.open('https://t.me/your_reviews_channel', '_blank');">
             <h3>⭐ Отзывы</h3>
+            <p>Посмотрите что говорят другие</p>
         </div>
 
-        <!-- БЛОК "ПОДДЕРЖКА" -->
         <div class="block" onclick="window.open('https://t.me/your_support_channel', '_blank');">
             <h3>🛟 Поддержка</h3>
+            <p>Помощь и ответы на вопросы</p>
         </div>
 
-        <!-- БЛОК "ЮРИДИЧЕСКАЯ ИНФОРМАЦИЯ" -->
         <div class="block" onclick="openLegalInfo()">
             <h3>⚖️ Юридическая информация</h3>
+            <p>Правила использования</p>
         </div>
 
         <!-- РАЗРАБОТЧИК -->
@@ -50,20 +59,23 @@
         </div>
     </div>
 
-    <!-- ОКНО "СОВЕТ ДРУЗЬЯМ" -->
+    <!-- ОКНО "ПРИГЛАСИТЬ ДРУЗЕЙ" -->
     <div id="referralPage" class="popup" style="display: none;">
         <div class="popup-content">
-            <h2>Совет друзьям</h2>
-            <p>Поделитесь ссылкой с друзьями и получите по 10 бесплатных вопросов каждый!</p>
+            <h2>👥 Пригласить друзей</h2>
+            <p>Поделитесь ссылкой и получите по 10 вопросов каждый!</p>
+            
             <div class="referral-link">
-                <input type="text" id="referralLink" readonly value="https://t.me/your_bot?start=ref123">
+                <input type="text" id="referralLink" readonly value="Генерируем ссылку...">
                 <button onclick="copyReferralLink()">Копировать</button>
             </div>
+            
             <div class="friends-list">
-                <h3>Ваши друзья</h3>
+                <h3>📊 Ваши друзья</h3>
                 <p>Пока никто не присоединился</p>
             </div>
-            <button class="btn-primary" onclick="shareReferralLink()">Пригласить друзей</button>
+            
+            <button class="btn-primary" onclick="shareReferralLink()">📤 Пригласить друзей</button>
             <button class="btn-secondary" onclick="closePopup('referralPage')">Закрыть</button>
         </div>
     </div>
@@ -71,7 +83,8 @@
     <!-- ОКНО ОПЛАТЫ -->
     <div id="paymentPage" class="popup" style="display: none;">
         <div class="popup-content">
-            <h2>Купить вопросы</h2>
+            <h2>💳 Купить вопросы</h2>
+            
             <div class="payment-options">
                 <div class="payment-option" onclick="selectPackage(100, 300)">
                     <span>100 вопросов</span>
@@ -94,34 +107,47 @@
                     <span>3000 руб.</span>
                 </div>
             </div>
+            
             <div class="payment-methods">
-                <h3>Способы оплаты</h3>
-                <button class="btn-payment" onclick="payWithCard()">💳 Картой</button>
-                <button class="btn-payment" onclick="payWithSBP()">🏦 СБП</button>
+                <h3>💳 Способы оплаты</h3>
+                <button class="btn-payment" onclick="processPayment()">
+                    Банковская карта
+                </button>
+                <button class="btn-payment" onclick="processPayment()">
+                    СБП
+                </button>
             </div>
+            
             <div class="legal-text">
                 <p>Нажимая кнопку, вы соглашаетесь с <a href="#" onclick="openLegalInfo()">договором оферты</a></p>
             </div>
-            <button class="btn-secondary" onclick="closePopup('paymentPage')">Назад</button>
+            
+            <button class="btn-secondary" onclick="closePopup('paymentPage')">← Назад</button>
         </div>
     </div>
 
     <!-- ОКНО ЮРИДИЧЕСКОЙ ИНФОРМАЦИИ -->
     <div id="legalPopup" class="popup" style="display: none;">
         <div class="popup-content">
-            <h2>Юридическая информация</h2>
+            <h2>⚖️ Юридическая информация</h2>
+            
             <div class="legal-tabs">
                 <button class="tab-btn active" onclick="openTab('userAgreement')">Пользовательское соглашение</button>
                 <button class="tab-btn" onclick="openTab('privacyPolicy')">Политика конфиденциальности</button>
             </div>
+            
             <div id="userAgreement" class="tab-content active">
                 <h3>Пользовательское соглашение</h3>
-                <p>Здесь будет текст вашего пользовательского соглашения...</p>
+                <p>Здесь будет текст вашего пользовательского соглашения. Опишите правила использования бота, условия предоставления услуг, ограничения ответственности и другие важные моменты.</p>
+                <p>Пример текста: Используя данного бота, вы соглашаетесь с тем, что все предоставляемые услуги носят развлекательный характер и не заменяют профессиональную консультацию.</p>
             </div>
+            
             <div id="privacyPolicy" class="tab-content">
                 <h3>Политика конфиденциальности</h3>
-                <p>Здесь будет текст вашей политики конфиденциальности...</p>
+                <p>Здесь будет текст вашей политики конфиденциальности. Опишите какие данные собираются, как используются и защищаются.</p>
+                <p>Пример текста: Мы собираем только необходимые данные для работы сервиса: идентификатор пользователя Telegram, баланс вопросов и историю операций.</p>
             </div>
+            
             <button class="btn-secondary" onclick="closePopup('legalPopup')">Закрыть</button>
         </div>
     </div>
